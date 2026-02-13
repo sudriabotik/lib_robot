@@ -10,7 +10,7 @@
 
 
 /**
- * @brief The queue size for the statemachine
+ * @brief The queue size for the statemachine.
  */
 # define TMP_STATEMACHINE_LENGTH 4
 
@@ -20,7 +20,7 @@ struct TmpStateMachine;
 struct TmpStateEnv;
 
 
-
+// change these typedefs to change which uint and int types are used througout the statemachine
 typedef unsigned int uint_t;
 typedef int int_t;
 
@@ -37,7 +37,9 @@ struct TmpStateEnv
 };
 
 
-
+/**
+ * @brief Represents a state that can be run by the statemachine
+ */
 struct TmpState
 {
 	TmpStateCall wake;
@@ -46,9 +48,12 @@ struct TmpState
 };
 
 
-
+/**
+ * @brief Represents the statemachine
+ */
 struct TmpStateMachine
 {
+	// the +1 is intentional, the last slot cannot be filled and is always a zero pointer to represent an empty state
 	struct TmpState* state_queue[TMP_STATEMACHINE_LENGTH+1];
 	struct TmpStateEnv envs_queue[TMP_STATEMACHINE_LENGTH+1];
 	uint_t index;
