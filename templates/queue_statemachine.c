@@ -108,20 +108,22 @@ int TSM_update(struct TmpStateMachine *machine, float delta_time)
 			current_env = &machine->envs_queue[machine->index];
 
 			// wakes up the current state
-			if (current_state != 0) if (current_state->stop != 0) current_state->wake(machine, current_env, delta_time);
+			if (current_state != 0) if (current_state->wake != 0) current_state->wake(machine, current_env, delta_time);
 
 			machine->state_finished = 0;
 		}
-
 	}
+
+	if (machine->state_exit_callback != 0) machine->state_exit_callback(machine, machine->state_exit_code);
 
 	if (current_state != 0) current_state->run(machine, current_env, delta_time);
 
 	return 0;
 }
 
-int_t TSM_set_state_finished(struct TmpStateMachine *machine)
+int_t TSM_set_state_finished(struct TmpStateMachine *machine, enum TmpExitCode code)
 {
 	machine->state_finished = 1;
+	machine->state_exit_code = code;
 	return 0;
 }

@@ -24,7 +24,21 @@ struct TmpStateEnv;
 typedef unsigned int uint_t;
 typedef int int_t;
 
+
+
+enum TmpExitCode
+{
+	TMP_EXIT_OK
+};
+
+
+/** @brief The function type for every wake, run and stop functions making up a state */
 typedef void (*TmpStateCall)(struct TmpStateMachine*, struct TmpStateEnv*, float delta_time);
+/**
+ * @brief This function will be called when the statemachine notice a state has finished. The exited code is given as argument.
+ * @note This is useful to react to a movement being blocked, for example.
+ */
+typedef void (*TmpStateExitCallback)(struct TmpStateMachine*, enum TmpExitCode);
 
 
 /**
@@ -58,11 +72,14 @@ struct TmpStateMachine
 	struct TmpStateEnv envs_queue[TMP_STATEMACHINE_LENGTH+1];
 	uint_t index;
 	int_t state_finished;
+	enum TmpExitCode state_exit_code;
 
 	struct TmpState* construction_state_queue[TMP_STATEMACHINE_LENGTH];
 	struct TmpStateEnv construction_envs_queue[TMP_STATEMACHINE_LENGTH];
 	uint_t construction_index;
 	uint_t load_construction_queue;
+
+	TmpStateExitCallback state_exit_callback;
 };
 
 
@@ -120,7 +137,7 @@ int_t TSM_update(struct TmpStateMachine *machine, float delta_time);
  * @brief Indicates the current state is done, and the statemachine may go to the next one.
  * @return 0
  */
-int_t TSM_set_state_finished(struct TmpStateMachine *machine);
+int_t TSM_set_state_finished(struct TmpStateMachine *machine, enum TmpExitCode code);
 
 
 
