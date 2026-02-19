@@ -9,6 +9,8 @@
 #include "stm32g431xx.h"
 
 
+# define MOTOR_LIMIT 20.0f
+
 
 /**
  * @brief Stores references and variables used to drive the motors.
