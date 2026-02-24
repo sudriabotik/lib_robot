@@ -9,7 +9,7 @@
 #include "stm32g431xx.h"
 
 
-# define MOTOR_LIMIT 20.0f
+# define MOTOR_LIMIT 30.0f
 
 
 /**

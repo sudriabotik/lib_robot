@@ -74,9 +74,15 @@ void spacestate_set_pos(struct SpaceState *spacestate, struct Point2D new_pos)
 	spacestate->pos_y_mm = new_pos.y;
 }
 
+void spacestate_add_pos(struct SpaceState *spacestate, struct Point2D new_pos)
+{
+	spacestate->pos_x_mm += new_pos.x;
+	spacestate->pos_y_mm += new_pos.y;
+}
+
 void spacestate_set_dir(struct SpaceState *spacestate, float new_dir)
 {
-	spacestate->dir_rad = new_dir;
+	spacestate->dir_rad = coord_normalize_angle(new_dir);
 }
 
 void spacestate_print(struct SpaceState *spacestate, const char* title)

@@ -64,6 +64,11 @@ void spacestate_set_dir_auto(struct SpaceState *spacestate, float new_dir, float
 void spacestate_set_pos(struct SpaceState *spacestate, struct Point2D new_pos);
 
 /**
+ * @brief Adds & position
+ */
+void spacestate_add_pos(struct SpaceState *spacestate, struct Point2D new_pos);
+
+/**
  * @brief Sets the orientation.
  * @param new_dir the new orientation in radians
  */
