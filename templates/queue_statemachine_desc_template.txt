@@ -1,0 +1,17 @@
+
+// STATEMACHINE_FULL_NAME
+test_statemachine
+
+// STATEMACHINE_ABBREVATION
+test
+
+// STATEMACHINE_STATE_STRUCT
+{
+	int soupe;
+}
+
+// STATEMACHINE_EXIT_CODE
+{
+	EXIT_OK,
+	EXIT_BAD
+}

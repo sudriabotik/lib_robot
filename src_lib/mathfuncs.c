@@ -65,6 +65,7 @@ struct FuncPositionSlope pregen_position_slope(float accel, float top_speed, flo
 	func.accel = fabs(accel);
 	func.top_speed = fabs(top_speed);
 	func.dist = dist;
+	float abs_dist = fabs(dist);
 
 	// first, verify if there is enough distance and acceleration to reach the max speed
 
@@ -75,12 +76,12 @@ struct FuncPositionSlope pregen_position_slope(float accel, float top_speed, flo
 	float d1 = (func.top_speed * func.top_speed) / (func.accel);
 
 	// check if it is more that the requested distance.
-	if (d1 > func.dist)
+	if (d1 > abs_dist)
 	{
 		// no steady speed part to the function
 		func.overlap = 1;
 
-		func.l1 = sqrtf(fabs(func.dist) / func.accel);
+		func.l1 = sqrtf(abs_dist / func.accel);
 		func.l2 = func.l1*2; // the end of the deceleration slope, after which the func becomes constant
 	}
 	else
@@ -88,7 +89,7 @@ struct FuncPositionSlope pregen_position_slope(float accel, float top_speed, flo
 		// there is a steady speed part in the function
 		func.overlap = 0;
 
-		func.l2 = (fabs(dist) - (func.l1 * func.l1) * accel) / top_speed;
+		func.l2 = (abs_dist - (func.l1 * func.l1) * accel) / top_speed;
 
 		func.c1 = eval_position_slope_f1(func.l1, func);
 		func.c2 = eval_position_slope_f2(func.l1 + func.l2, func);
