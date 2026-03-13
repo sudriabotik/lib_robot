@@ -75,5 +75,5 @@ void ax_send_instruction_write(uint8_t id, uint8_t address, uint16_t data)
  */
 void ax_write_position(uint8_t id, uint16_t position)
 {
-	
+	ax_send_instruction_write(id, GOAL_POSITION, position);
 }

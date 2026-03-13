@@ -115,13 +115,15 @@ enum AX_ADDR_2B_RW_DBL
 	GOAL_POSITION_MOVING_SPEED = 30,
 };
 
+void ax_write_position(uint8_t id, uint16_t position);
 
+/* 
 void AX_send_write_1B_RW(uint8_t id, enum AX_ADDR_1B_RW address, uint8_t data);
 void AX_send_write_1B_RW_DBL(uint8_t id, enum AX_ADDR_1B_RW_DBL address, uint8_t data1, uint8_t data2);
 
 
 void AX_send_write_2B_RW(uint8_t id, enum AX_ADDR_1B_RW address, uint16_t data);
 void AX_send_write_2B_RW_DBL(uint8_t id, enum AX_ADDR_1B_RW_DBL address, uint16_t data1, uint16_t data2);
-
+*/ 
 
 # endif
