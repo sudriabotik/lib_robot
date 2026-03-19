@@ -9,9 +9,6 @@
 #include "stm32g431xx.h"
 
 
-# define MOTOR_LIMIT 30.0f
-
-
 /**
  * @brief Stores references and variables used to drive the motors.
  * 
@@ -30,6 +27,9 @@ struct MotorHandle
 	GPIO_TypeDef *dir_gpio_port;
 	uint16_t dir_gpio_pin;
 	bool reverse;
+
+	// the maximum absolute value of the pwm sent to this motor, in percentage.
+	float pwm_limit;
 };
 
 /**
