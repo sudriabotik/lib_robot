@@ -40,6 +40,8 @@ struct MotorHandle
  */
 void motor_drive(struct MotorHandle handle, float speed);
 
+void motor_drive_debug(struct MotorHandle handle, float speed);
+
 
 
 
