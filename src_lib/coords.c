@@ -39,8 +39,8 @@ float coord_normalize_angle_deg(float angle_deg)
 	float result = angle_deg;
 
 	// normalise dans [-180, 180]
-	if (result > M_PI) result -= 360.0f;
-	if (result < -M_PI) result += 360.0f;
+	if (result > 360.0f) result -= 360.0f;
+	if (result < -360.0f) result += 360.0f;
 
 	return result;
 }
