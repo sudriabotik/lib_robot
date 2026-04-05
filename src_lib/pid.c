@@ -1,4 +1,5 @@
 # include "pid.h"
+# include "robot_data.h"
 
 
 void PID_reset_runtime(struct PidRuntime *runtime)
@@ -51,7 +52,7 @@ float PID_Run(struct PidRuntime *runtime, const struct PidSettings *settings, fl
 
 	runtime->last_err = runtime->p;
 
-	printf("pid_out=%.3f ", out); // claude
+	debug_printf("pid_out=%.3f ", out); // claude
 
 	return out;
 }
@@ -115,7 +116,7 @@ float PID_Run_V2(struct PidRuntime *runtime, const struct PidSettings *settings,
 	runtime->last_err = runtime->p;
 	runtime->last_measurement = current_val;
 
-	printf("pid_out=%.3f ", out); // claude
+	debug_printf("pid_out=%.3f ", out); // claude
 
 	return out;
 }
