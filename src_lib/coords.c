@@ -34,10 +34,27 @@ float coord_normalize_angle(float angle_rad)
 	return result;
 }
 
+float coord_normalize_angle_deg(float angle_deg)
+{
+	float result = angle_deg;
+
+	// normalise dans [-180, 180]
+	if (result > 360.0f) result -= 360.0f;
+	if (result < -360.0f) result += 360.0f;
+
+	return result;
+}
+
 float coord_get_delta_angle(float from_rad, float to_rad)
 {
 	float delta = to_rad - from_rad;
 	return coord_normalize_angle(delta);
+}
+
+float coord_get_delta_angle_deg(float from_deg, float to_deg)
+{
+	float delta = to_deg - from_deg;
+	return coord_normalize_angle_deg(delta);
 }
 
 struct Point2D coord_vectorize(float dir_rad, float length)
