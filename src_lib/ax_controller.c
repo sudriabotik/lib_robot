@@ -51,14 +51,14 @@ void ax_send_packet()
  * @param address The address in the AX's control table the data will be written to
  * @param data The data to write to the AX
  */
-void ax_send_instruction_write(uint8_t id, uint8_t address, uint16_t data)
+void ax_send_instruction_write_1_2B(uint8_t id, enum AX_ADDR_2B_RW address, uint16_t data)
 {
 	ax_instruction_msg[AX_INDEX_ID] = id;
 	ax_instruction_msg[AX_INDEX_LEN] = 0x05;
 	ax_instruction_msg[AX_INDEX_INSTRUCTION] = 0x03;
 
 	// sets the address 
-	ax_instruction_msg[5] = address;
+	ax_instruction_msg[5] = (uint8_t)address;
 
 	// sets the data
 	ax_instruction_msg[6] = (uint8_t)(data) & 0xFF;
@@ -68,6 +68,33 @@ void ax_send_instruction_write(uint8_t id, uint8_t address, uint16_t data)
 	ax_send_packet();
 }
 
+
+
+/**
+ * @brief Sends a write instruction of two times two bytes.
+ * 
+ * @param id The ID of the destination AX
+ * @param address The address in the AX's control table the data will be written to
+ * @param data The data to write to the AX
+ */
+void ax_send_instruction_write_2_2B(uint8_t id, enum AX_ADDR_2B_RW_DBL address, uint16_t data1, uint16_t data2)
+{
+	ax_instruction_msg[AX_INDEX_ID] = id;
+	ax_instruction_msg[AX_INDEX_LEN] = 0x07;
+	ax_instruction_msg[AX_INDEX_INSTRUCTION] = 0x03;
+
+	// sets the address 
+	ax_instruction_msg[5] = (uint8_t)address;
+
+	// sets the data
+	ax_instruction_msg[6] = (uint8_t)(data1) & 0xFF;
+	ax_instruction_msg[7] = (uint8_t)(data1 >> 8) & 0xFF;
+	ax_instruction_msg[8] = (uint8_t)(data2) & 0xFF;
+	ax_instruction_msg[9] = (uint8_t)(data2 >> 8) & 0xFF;
+
+	ax_calculate_checksum();
+	ax_send_packet();
+}
 
 
 /**
@@ -83,6 +110,11 @@ void ax_write_position(uint8_t id, uint16_t position)
 void ax_write_speed(uint8_t id, uint16_t position)
 {
 	ax_send_instruction_write(id, MOVING_SPEED, position);
+}
+
+void ax_write_position_and_speed(uint8_t id, uint16_t position, uint16_t speed)
+{
+	ax_send_instruction_write_2_2B(id, GOAL_POSITION_MOVING_SPEED, position, speed);
 }
 
 
