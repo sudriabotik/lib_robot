@@ -1,5 +1,7 @@
 # include "ax_controller.h"
 # include "usart.h"
+#include <stdint.h>
+#include <sys/types.h>
 
 
 # define AX_INDEX_ID 2
@@ -77,3 +79,10 @@ void ax_write_position(uint8_t id, uint16_t position)
 {
 	ax_send_instruction_write(id, GOAL_POSITION, position);
 }
+
+void ax_write_speed(uint8_t id, uint16_t position)
+{
+	ax_send_instruction_write(id, MOVING_SPEED, position);
+}
+
+

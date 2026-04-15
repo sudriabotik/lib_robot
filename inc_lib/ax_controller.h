@@ -117,6 +117,8 @@ enum AX_ADDR_2B_RW_DBL
 
 void ax_write_position(uint8_t id, uint16_t position);
 
+void ax_write_speed(uint8_t id, uint16_t speed);
+
 /* 
 void AX_send_write_1B_RW(uint8_t id, enum AX_ADDR_1B_RW address, uint8_t data);
 void AX_send_write_1B_RW_DBL(uint8_t id, enum AX_ADDR_1B_RW_DBL address, uint8_t data1, uint8_t data2);
