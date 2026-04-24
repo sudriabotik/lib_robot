@@ -38,9 +38,9 @@ struct MotorHandle
  * @param handle A handle to the motor to drive.
  * @param speed The value to drive the motor to. Accept values -100% to 100%.
  */
-void motor_drive(struct MotorHandle handle, float speed);
+void motor_set_pwm_percent(struct MotorHandle handle, float speed);
 
-void motor_drive_debug(struct MotorHandle handle, float speed);
+void motor_set_pwm_percent_debug(struct MotorHandle handle, float speed);
 
 
 

@@ -65,4 +65,12 @@ int Encoder16Update(struct Encoder16Handle *handle);
 void Encoder16PrintStatus(struct Encoder16Handle handle);
 
 
+/**
+ * @brief Calculate current velocity in RPS from encoder delta
+ * @param encoder The encoder handle with updated total_count_delta
+ * @param delta_ms Time period over which delta was measured (milliseconds)
+ * @return Current velocity in revolutions per second
+ */
+float encoder_get_rps(const struct Encoder16Handle encoder, float delta_ms);
+
 # endif // __ENCODERS_H

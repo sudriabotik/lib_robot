@@ -101,6 +101,10 @@ struct FuncPositionSlope pregen_position_slope(float accel, float top_speed, flo
 	return func;
 }
 
+/// @brief 
+/// @param t 
+/// @param func 
+/// @return 
 float eval_position_slope(float t, struct FuncPositionSlope func)
 {
 	if (t < 0) return 0;

@@ -58,3 +58,9 @@ void Encoder16PrintStatus(struct Encoder16Handle handle)
 	printf("situation : %"PRIu32"\n", handle.situation);
 	printf("counter register raw : %"PRIu32"\n", TIM3->CNT);
 }
+
+float encoder_get_rps(const struct Encoder16Handle encoder, float delta_ms)
+{
+	float ticks_per_ms = (float)encoder.total_count_delta / delta_ms;
+	return (ticks_per_ms * 1000.0f) / encoder.ticks_per_revolution;
+}
