@@ -73,4 +73,5 @@ void Encoder16PrintStatus(struct Encoder16Handle handle);
  */
 float encoder_get_rps(const struct Encoder16Handle encoder, float delta_ms);
 
+float encoder_get_rpm(const struct Encoder16Handle encoder, float delta_ms);
 # endif // __ENCODERS_H

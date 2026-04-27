@@ -15,7 +15,7 @@
  * @param settings PID configuration
  * @param runtime PID runtime state
  */
-void motor_drive_pid_rps(float delta_ms, float target_rps, float current_rps, const struct MotorHandle motor, const struct PidSettings settings, struct PidRuntime *runtime);
+void motor_drive_pid_rpm(float delta_ms, float target_rps, float current_rps, const struct MotorHandle motor, const struct PidSettings settings, struct PidRuntime *runtime);
 
 
 /**
