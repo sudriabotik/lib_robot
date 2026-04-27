@@ -69,5 +69,5 @@ float encoder_get_rps(const struct Encoder16Handle encoder, float delta_ms)
 float encoder_get_rpm(const struct Encoder16Handle encoder, float delta_s)
 {
 	float ticks_per_s = (float)encoder.total_count_delta / delta_s;
-	return (ticks_per_s* 60.0f) / encoder.ticks_per_revolution;
+	return (ticks_per_s * 60.0f) / encoder.ticks_per_revolution;
 }
