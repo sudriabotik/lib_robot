@@ -71,6 +71,14 @@ float coord_get_distance(struct Point2D from, struct Point2D target)
 	);
 }
 
+float coord_get_distance_f(float x1, float y1, float x2, float y2)
+{
+	return sqrtf(
+		(x1 - x2) * (x1 - x2) +
+		(y1 - y2) * (y1 - y2)
+	);
+}
+
 
 
 void spacestate_set_pos_auto(struct SpaceState *spacestate, struct Point2D new_pos, float delta_time_ms)
@@ -116,4 +124,16 @@ void spacestate_print(struct SpaceState *spacestate, const char* title)
 		spacestate->lin_vel,
 		spacestate->ang_vel * 180.0f / M_PI
 	);
+}
+
+float coord_get_signed_distance_between(struct SpaceState first, struct SpaceState second)
+{
+	float distance = coord_get_distance_f(first.pos_x_mm, first.pos_y_mm, second.pos_x_mm, second.pos_y_mm);
+
+	float avg_angle = coord_normalize_angle((first.dir_rad + second.dir_rad) / 2.0f);
+	printf("avg angle : %f", avg_angle);
+	float distance_angle = coord_get_target_angle_f(first.pos_x_mm, first.pos_y_mm, second.pos_x_mm, second.pos_y_mm);
+	printf("distance angle : %f", distance_angle);
+
+	return distance * cos(avg_angle - distance_angle);
 }

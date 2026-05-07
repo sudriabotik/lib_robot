@@ -124,6 +124,8 @@ struct Point2D coord_vectorize(float dir_rad, float length);
  *        Retourne une valeur négative si face == FACE_ARRIERE.
  */
 float coord_get_distance(struct Point2D from, struct Point2D target);
+float coord_get_distance_f(float x1, float y1, float x2, float y2);
 
+float coord_get_signed_distance_between(struct SpaceState first, struct SpaceState second);
 
 # endif
