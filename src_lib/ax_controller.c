@@ -1,10 +1,31 @@
 # include "ax_controller.h"
 # include "usart.h"
+# include <stdio.h>
 
 
 # define AX_INDEX_ID 2
 # define AX_INDEX_LEN 3
 # define AX_INDEX_INSTRUCTION 4
+
+# define AX_RX_BUFFER_SIZE 5
+
+
+
+enum AX_RX_MSG_STATE
+{
+	RX_STATE_WAITING_HEADER,
+	RX_STATE_WAITING_SECOND_HEADER,
+	RX_STATE_WAITING_ID,
+	RX_STATE_WAITING_LENGTH,
+	RX_STATE_WAITING_ERROR,
+};
+
+
+
+volatile uint8_t ax_uart_rx_char;
+enum AX_RX_MSG_STATE rx_state = RX_STATE_WAITING_HEADER;
+
+enum AX_LAST_COMMAND_STATUS last_command_status = AX_LAST_COMMAND_NO_RESPONSE;
 
 
 void ax_init() {}
@@ -13,6 +34,68 @@ void ax_init() {}
 // <header> <header> <id> <length> <instruction> ... <checksum>
 uint8_t ax_instruction_msg[] = {0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
+
+void ax_process_rx_char()
+{
+	switch (rx_state)
+	{
+		case RX_STATE_WAITING_HEADER :
+
+			if (ax_uart_rx_char == 0xFF)
+			{
+				rx_state = RX_STATE_WAITING_SECOND_HEADER;
+			}
+			break;
+
+
+		case RX_STATE_WAITING_SECOND_HEADER :
+
+			if (ax_uart_rx_char == 0xFF)
+			{
+				rx_state = RX_STATE_WAITING_ID;
+			}
+			break;
+
+
+		case RX_STATE_WAITING_ID :
+
+			// check if the received ID is the same as the one in the last instruction sent
+			if (ax_uart_rx_char == ax_instruction_msg[2])
+			{
+				rx_state = RX_STATE_WAITING_LENGTH;
+			}
+			else
+			{
+				printf("[AX_CONTROLLER] ID of reply does not match last sent command\r\n");
+				rx_state = RX_STATE_WAITING_HEADER;
+			}
+			break;
+
+
+		case RX_STATE_WAITING_LENGTH :
+
+			rx_state = RX_STATE_WAITING_ERROR;
+			break;
+
+
+		case RX_STATE_WAITING_ERROR :
+
+			if (ax_uart_rx_char == 0x00)
+			{
+				last_command_status = AX_LAST_COMMAND_SUCCESS;
+			}
+			else
+			{
+				last_command_status = AX_LAST_COMMAND_ERROR;
+			}
+			rx_state = RX_STATE_WAITING_HEADER;
+			break;
+
+		default :
+			rx_state = RX_STATE_WAITING_HEADER;
+			break;
+	}
+}
 
 /**
  * @brief Reads the length of the packet and calculates the checksum in the correct place.
@@ -28,6 +111,13 @@ void ax_calculate_checksum()
 }
 
 
+
+void ax_set_uart_direction(int dir)
+{
+	HAL_GPIO_WritePin(AX_DIR_GPIO, AX_DIR_GPIO_PIN, dir); // switch half duplex adapter to TX on RESET (0), and RX on SET (1)
+}
+
+
 /**
  * @brief Sends the current packet.
  * Adjusts the size by reading the contents of the array.
@@ -38,7 +128,12 @@ void ax_send_packet()
 
 	HAL_GPIO_WritePin(AX_DIR_GPIO, AX_DIR_GPIO_PIN, GPIO_PIN_RESET); // switch half duplex adapter to TX
 	HAL_UART_Transmit_IT(AX_UART, ax_instruction_msg, total_packet_len);
+
+	last_command_status = AX_LAST_COMMAND_NO_RESPONSE;
 }
+
+
+enum AX_LAST_COMMAND_STATUS ax_get_last_command_status() {return last_command_status;}
 
 
 

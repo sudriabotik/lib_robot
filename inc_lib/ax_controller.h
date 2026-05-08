@@ -2,6 +2,7 @@
 # define __AX_CONTROLLER_H
 
 #include "stm32g431xx.h"
+#include <stdint.h>
 
 /**
  * @file ax_controller.h
@@ -115,7 +116,27 @@ enum AX_ADDR_2B_RW_DBL
 	GOAL_POSITION_MOVING_SPEED = 30,
 };
 
+enum AX_LAST_COMMAND_STATUS
+{
+	AX_LAST_COMMAND_NO_RESPONSE,
+	AX_LAST_COMMAND_SUCCESS,
+	AX_LAST_COMMAND_ERROR
+};
+
+extern volatile uint8_t ax_uart_rx_char;
+
+/** Process the data in ax_uart_rx_buffer, considering it is the next received char from the ax
+ *  This function is a small statemachine which currently only reads the error the state from any received message. It does not check the CRC.
+ */
+void ax_process_rx_char();
 void ax_write_position(uint8_t id, uint16_t position);
+
+/**
+ *  @param dir 0 for transmission, 1 for reception
+ */
+void ax_set_uart_direction(int dir);
+
+enum AX_LAST_COMMAND_STATUS ax_get_last_command_status();
 
 /* 
 void AX_send_write_1B_RW(uint8_t id, enum AX_ADDR_1B_RW address, uint8_t data);
