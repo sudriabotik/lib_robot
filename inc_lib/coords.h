@@ -98,9 +98,19 @@ float coord_get_target_angle_f(float from_x, float from_y, float target_x, float
 float coord_normalize_angle(float angle_rad);
 
 /**
+ * @brief Normalize the angle
+ */
+float coord_normalize_angle_deg(float angle_deg);
+
+/**
  * @brief Calcule la rotation relative (radians) à effectuer pour passer de from_rad à to_rad.
  */
 float coord_get_delta_angle(float from_rad, float to_rad);
+
+/**
+ * @brief Calcule la rotation relative (degrees) à effectuer pour passer de from_deg à to_deg.
+ */
+float coord_get_delta_angle_deg(float from_deg, float to_deg);
 
 /**
  * @brief Converts an angle and distance to a vector with xy coords.

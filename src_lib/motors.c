@@ -1,6 +1,7 @@
 # include "motors.h"
 
 # include <math.h>
+# include "robot_data.h"
 
 
 void motor_drive(struct MotorHandle handle, float speed)
@@ -23,5 +24,5 @@ void motor_drive_debug(struct MotorHandle handle, float speed)
 	else if (speed > handle.pwm_limit) speed = handle.pwm_limit;
 	uint32_t duty_cycle = (uint32_t)((handle.pwm_arr * (fabs(speed))) / 100.0f);
 	*handle.pwm_ccr = duty_cycle;
-	printf("speed=%.2f%% duty=%lu dir=%d\r\n", speed, duty_cycle, (speed < 0) ^ (handle.reverse)); // claude
+	debug_printf("speed=%.2f%% duty=%lu dir=%d\r\n", speed, duty_cycle, (speed < 0) ^ (handle.reverse)); // claude
 }

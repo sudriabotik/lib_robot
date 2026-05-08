@@ -138,6 +138,9 @@ void ax_set_uart_direction(int dir);
 
 enum AX_LAST_COMMAND_STATUS ax_get_last_command_status();
 
+
+void ax_write_speed(uint8_t id, uint16_t speed);
+
 /* 
 void AX_send_write_1B_RW(uint8_t id, enum AX_ADDR_1B_RW address, uint8_t data);
 void AX_send_write_1B_RW_DBL(uint8_t id, enum AX_ADDR_1B_RW_DBL address, uint8_t data1, uint8_t data2);
