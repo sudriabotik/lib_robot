@@ -7,11 +7,28 @@
 
 
 /**
- * @brief Controls an encoded motor using the given PID
- * 
- * @param rps target revolutions per seconds
+ * @brief Drive a motor using PID control based on velocity in RPS
+ * @param delta_ms Time since last update (milliseconds)
+ * @param target_rps Target velocity (revolutions per second)
+ * @param current_rps Measured velocity (revolutions per second)
+ * @param motor Motor handle
+ * @param settings PID configuration
+ * @param runtime PID runtime state
  */
-void motor_drive_pid(float delta_ms, float rps, const struct MotorHandle motor, const struct Encoder16Handle encoder, const struct PidSettings settings, struct PidRuntime *runtime);
+void motor_drive_pid_rpm(float delta_ms, float target_rps, float current_rps, const struct MotorHandle motor, const struct PidSettings settings, struct PidRuntime *runtime);
 
+
+/**
+ * @brief Drive a motor using PID control based on position in encoder ticks
+ * @param delta_ms Time since last update (milliseconds)
+ * @param target_ticks Target position (encoder ticks)
+ * @param current_ticks Current position (encoder ticks)
+ * @param motor Motor handle
+ * @param settings PID configuration
+ * @param runtime PID runtime state
+ */
+void motor_drive_pid_ticks(float delta_ms, int32_t target_ticks, int32_t current_ticks, 
+                            const struct MotorHandle motor, const struct PidSettings settings, 
+                            struct PidRuntime *runtime);
 
 # endif

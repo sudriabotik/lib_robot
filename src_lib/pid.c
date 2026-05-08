@@ -18,6 +18,8 @@ void PID_set_runtime_last_value(struct PidRuntime *runtime, float last_val)
 }
 
 
+
+
 float PID_Run(struct PidRuntime *runtime, const struct PidSettings *settings, float current_val, float target_val, float delta)
 {
 	float out;
@@ -42,6 +44,11 @@ float PID_Run(struct PidRuntime *runtime, const struct PidSettings *settings, fl
 
 	// calculates the output
 	out = runtime->p * settings->kp + runtime->i * settings->ki + runtime->d * settings->kd;
+
+	debug_printf("P_contribution =%.3f ", runtime->p * settings->kp); 
+	debug_printf("I_contribution =%.3f ", runtime->i * settings->ki); 
+	debug_printf("D_contribution =%.3f ", runtime->d * settings->kd); 
+	debug_printf("out_before_clamp=%.3f ", out); 
 
 	// clamp the final output
 	if (out > settings->max_output) out = settings->max_output;
