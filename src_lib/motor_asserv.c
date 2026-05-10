@@ -46,7 +46,7 @@ void motor_drive_pid_ticks(float delta_ms, int32_t target_ticks, int32_t current
 			debug_printf("ENCODER_TRANSITION_ERROR!_RESETTING! ");
 			// Sauvegarde
 			uint32_t cnt_backup = TIM3->CNT;
-			int32_t rollover_backup = encoder_R.rollover_count;
+			int32_t rollover_backup = encoder_R._rollover_count;
 			
 			// Hard reset du timer
 			TIM3->CR1 &= ~TIM_CR1_CEN;  // Stop
@@ -102,7 +102,7 @@ void motor_drive_pid_ticks(float delta_ms, int32_t target_ticks, int32_t current
 			debug_printf("ENCODER_TRANSITION_ERROR!_RESETTING! ");
 			// Sauvegarde
 			uint32_t cnt_backup = TIM4->CNT;
-			int32_t rollover_backup = encoder_R.rollover_count;
+			int32_t rollover_backup = encoder_R._rollover_count;
 			
 			// Hard reset du timer
 			TIM4->CR1 &= ~TIM_CR1_CEN;  // Stop

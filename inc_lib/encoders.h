@@ -31,13 +31,13 @@ enum encoder_situation
 struct Encoder16Handle
 {
 	/** The 32 bits count computed from the timer counter and detected rollovers */
-	int32_t total_count;
+	int32_t _total_count;
 
 	/** The delta between now and the last update */
-	int32_t total_count_delta;
+	int32_t _total_count_delta;
 
 	/** Increases at each timer rollover and decreases at each rollback */
-	int32_t rollover_count;
+	int32_t _rollover_count;
 
 	/** A pointer to the timer CNT we are watching for this encoder 
 	 * It is stored in an uint32_t, probably for compatibility between 16 and 32 bits timers.
@@ -45,24 +45,32 @@ struct Encoder16Handle
 	volatile uint32_t *tim_counter;
 
 	/** Store if the encoder is close to underflow or overflow */
-	uint32_t situation;
+	uint32_t _situation;
 
 	/** Specify the distance from underflow or overflow that is considered "close" */
 	uint32_t close_distance;
 
 	/** Ticks per revolution */
 	uint32_t ticks_per_revolution;
+
+	/** @brief Multiplier for direction.
+	 *  @note MUST BE EITHER 1 OR -1.
+	 */
+	int multiplier;
 };
 
 
 /**
  * @brief Set the encoder variables so the count and overflows are zero
  */
-int Encoder16Reset(struct Encoder16Handle *handle);
+int Encoder16Reset(struct Encoder16Handle* handle);
 
-int Encoder16Update(struct Encoder16Handle *handle);
+int Encoder16Update(struct Encoder16Handle* handle);
 
 void Encoder16PrintStatus(struct Encoder16Handle handle);
+
+int32_t Encoder16GetTicks(struct Encoder16Handle* handle);
+int32_t Encoder16GetTicksDelta(struct Encoder16Handle* handle);
 
 
 /**
