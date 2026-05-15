@@ -92,10 +92,11 @@ float PID_Run(struct PidRuntime *runtime, const struct PidSettings *settings, fl
  * @param settings Pointer to the PID settings (must include kff)
  * @param current_val Current measured value
  * @param target_val Desired target value
- * @param delta Delta time since the last PID run (in milliseconds)
+ * @param delta Delta time since the last PID run (in sec)
  * @return float PID output command
  */
 float PID_Run_V2(struct PidRuntime *runtime, const struct PidSettings *settings, float current_val, float target_val, float delta);
 
+float PID_Run_V2_debug(struct PidRuntime *runtime, const struct PidSettings *settings, float current_val, float target_val, float delta);
 
 # endif // __PID_H

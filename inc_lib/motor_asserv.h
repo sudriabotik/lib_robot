@@ -18,6 +18,9 @@
 void motor_drive_pid_rpm(float delta_ms, float target_rps, float current_rps, const struct MotorHandle motor, const struct PidSettings settings, struct PidRuntime *runtime);
 
 
+void motor_drive_pid_rpm_debug(float delta_s, float target_rpm, float current_rpm, const struct MotorHandle motor, const struct PidSettings settings, struct PidRuntime *runtime);
+
+
 /**
  * @brief Drive a motor using PID control based on position in encoder ticks
  * @param delta_ms Time since last update (milliseconds)

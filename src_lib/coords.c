@@ -36,13 +36,13 @@ float coord_normalize_angle(float angle_rad)
 
 float coord_normalize_angle_deg(float angle_deg)
 {
-	float result = angle_deg;
+    float result = angle_deg;
 
-	// normalise dans [-180, 180]
-	if (result > 360.0f) result -= 360.0f;
-	if (result < -360.0f) result += 360.0f;
+    // Normalise dans [-180, 180]
+    while (result > 180.0f) result -= 360.0f;
+    while (result < -180.0f) result += 360.0f;
 
-	return result;
+    return result;
 }
 
 float coord_get_delta_angle(float from_rad, float to_rad)

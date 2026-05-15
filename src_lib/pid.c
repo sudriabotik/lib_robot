@@ -111,7 +111,13 @@ float PID_Run_V2(struct PidRuntime *runtime, const struct PidSettings *settings,
 	    + runtime->i * settings->ki
 	    + runtime->d * settings->kd
 	    + target_val * settings->kff;  // Feedforward term
-
+	/* 
+	debug_printf("P =%.3f ", runtime->p * settings->kp); 
+	debug_printf("I =%.3f ", runtime->i * settings->ki); 
+	debug_printf("D =%.3f ", runtime->d * settings->kd); 
+	debug_printf("FF =%.3f",target_val * settings->kff);
+	debug_printf("out=%.3f ", out); 
+	*/
 	// Clamp the final output
 	if (out > settings->max_output) out = settings->max_output;
 	else if (out < -settings->max_output) out = -settings->max_output;
@@ -123,7 +129,61 @@ float PID_Run_V2(struct PidRuntime *runtime, const struct PidSettings *settings,
 	runtime->last_err = runtime->p;
 	runtime->last_measurement = current_val;
 
-	debug_printf("pid_out=%.3f ", out); // claude
+	//debug_printf("pid_out=%.3f ", out); // claude
+
+	return out;
+}
+
+
+
+float PID_Run_V2_debug(struct PidRuntime *runtime, const struct PidSettings *settings, float current_val, float target_val, float delta)
+{
+	float out;
+
+	// Calculate error (proportional term)
+	runtime->p = target_val - current_val;
+
+	// Derivative-on-Measurement: d/dt of measurement (not error!)
+	// Negative sign because we want to oppose changes in measurement
+	float measurement_derivative = -(current_val - runtime->last_measurement) / delta;
+	runtime->d = measurement_derivative * (1 - settings->fratio) + runtime->d * settings->fratio;
+
+	// Integral accumulation
+	runtime->i = runtime->i + runtime->p * delta;
+
+	// Integral decay (anti-windup)
+	if (runtime->i > settings->decay * delta) runtime->i -= settings->decay * delta;
+	else if (runtime->i > 0) runtime->i = 0;
+	else if (runtime->i < -settings->decay * delta) runtime->i += settings->decay * delta;
+	else if (runtime->i < 0) runtime->i = 0;
+
+	// Clamp the integral
+	if (runtime->i < -settings->i_lim) runtime->i = -settings->i_lim;
+	if (runtime->i > settings->i_lim) runtime->i = settings->i_lim;
+
+	// Calculate output with feedforward
+	out = runtime->p * settings->kp
+	    + runtime->i * settings->ki
+	    + runtime->d * settings->kd
+	    + target_val * settings->kff;  // Feedforward term
+	
+	debug_printf("P =%.3f ", runtime->p * settings->kp); 
+	debug_printf("I =%.3f ", runtime->i * settings->ki); 
+	debug_printf("D =%.3f ", runtime->d * settings->kd); 
+	debug_printf("FF =%.3f ",target_val * settings->kff);
+	
+	// Clamp the final output
+	if (out > settings->max_output) out = settings->max_output;
+	else if (out < -settings->max_output) out = -settings->max_output;
+
+	if (out >= 0 && out < settings->min_output) out = settings->min_output;
+	else if (out <= 0 && out > -settings->min_output) out = -settings->min_output;
+
+	// Store for next iteration
+	runtime->last_err = runtime->p;
+	runtime->last_measurement = current_val;
+
+	debug_printf("out=%.3f ", out); 
 
 	return out;
 }

@@ -21,7 +21,14 @@ void motor_drive_pid(float delta_ms, float rps, const struct MotorHandle motor, 
 void motor_drive_pid_rpm(float delta_s, float target_rpm, float current_rpm, const struct MotorHandle motor, const struct PidSettings settings, struct PidRuntime *runtime)
 {
 	//debug_printf("target_rps=%.3f current_rps=%.3f ", target_rps, current_rps);
-	float pwm_percent = PID_Run(runtime, &settings, current_rpm, target_rpm, delta_s);
+	float pwm_percent = PID_Run_V2(runtime, &settings, current_rpm, target_rpm, delta_s);
+	motor_set_pwm_percent_debug(motor, pwm_percent);
+}
+
+void motor_drive_pid_rpm_debug(float delta_s, float target_rpm, float current_rpm, const struct MotorHandle motor, const struct PidSettings settings, struct PidRuntime *runtime)
+{
+	//debug_printf("target_rps=%.3f current_rps=%.3f ", target_rps, current_rps);
+	float pwm_percent = PID_Run_V2_debug(runtime, &settings, current_rpm, target_rpm, delta_s);
 	motor_set_pwm_percent_debug(motor, pwm_percent);
 }
 
@@ -142,7 +149,7 @@ void motor_drive_pid_ticks(float delta_ms, int32_t target_ticks, int32_t current
 	}
 
 	// PID works directly with ticks as floats
-	float pwm_percent = PID_Run(runtime, &settings, (float)current_ticks, (float)target_ticks, delta_ms);
+	float pwm_percent = PID_Run_V2(runtime, &settings, (float)current_ticks, (float)target_ticks, delta_ms);
 	
 	motor_set_pwm_percent_debug(motor, pwm_percent);
 }
